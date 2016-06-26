@@ -1,0 +1,14 @@
+*.pid
+*.log*
+*~
+*.pyc
+workspace.xml
+target
+.classpath
+.project
+.settings
+mem.properties
+mem.script
+.pydevproject
+.tern-project
+
