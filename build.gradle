@@ -25,7 +25,10 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
+    compile('org.springframework.boot:spring-boot-starter-web') {
+        //exclude module: 'org.springframework.boot:spring-boot-starter-logging'
+    }
+    //compile('org.springframework.boot:spring-boot-starter-log4j')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('com.jayway.jsonpath:json-path')
 }
