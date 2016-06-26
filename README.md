@@ -1,10 +1,29 @@
 brest
 =====
 
-Build
+Gradle Build
 -----
+gradlew build # set gradle version in gradle/wrapper/gradle-wrapper.properties
+java -jar build/libs/brest-0.1.0.jar
 
-mvn clean install -P local
+Maven Build
+-----
+mvn spring-boot:run. 
+
+or
+mvn clean install
+java -jar target/brest-0.1.0.jar
+
+Smoke Test
+-----
+http://localhost:8080/greeting # the default name parameter is "World"
+http://localhost:8080/greeting?name=steve
+
+TODO
+-----
+* debug boot application
+* specify log file and access log
+* package and deploy
 
 Fabric
 -----------

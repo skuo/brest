@@ -8,7 +8,7 @@ import time
 
 VERSION="0.1.0-SNAPSHOT-local"
 
-projName="zrest"
+projName="brest"
 tarGzFile=""
 ver=""
 
@@ -18,50 +18,50 @@ ver=""
 def build_and_debug(version=VERSION):
     with settings(warn_only=True):
         local("pwd")
-        local("./target/zrest-%s/bin/stopZRest.sh" % version)
+        local("./target/BRest-%s/bin/stopBRest.sh" % version)
         local("mvn clean install -P local")
-        local("cd target; tar -zxvf zrest-%s.tar.gz" % version)
+        local("cd target; tar -zxvf BRest-%s.tar.gz" % version)
         #replace_properties()
         #
-        local("cd target/zrest-%s; ./bin/debugZRest.sh" % version)
+        local("cd target/BRest-%s; ./bin/debugBRest.sh" % version)
         print "\nwait 3 seconds before tailing\n"
         time.sleep(3)
-        local("tail -100f target/zrest-%s/logs/*.stderrout.log" % version)
+        local("tail -100f target/BRest-%s/logs/*.stderrout.log" % version)
    
 @task
 def build_skip_tests_and_debug(version=VERSION):
     with settings(warn_only=True):
         local("pwd")
-        local("./target/zrest-%s/bin/stopRoyaltyWeb.sh" % version)
+        local("./target/BRest-%s/bin/stopRoyaltyWeb.sh" % version)
         local("mvn clean install -DskipTests -P local")
-        local("cd target; tar -zxvf zrest-%s.tar.gz" % version)
+        local("cd target; tar -zxvf BRest-%s.tar.gz" % version)
         #replace_properties()
         #
-        local("cd target/zrest-%s; ./bin/debugZRest.sh" % version)
+        local("cd target/BRest-%s; ./bin/debugBRest.sh" % version)
         print "\nwait 3 seconds before tailing\n"
         time.sleep(3)
-        local("tail -100f target/zrest-%s/logs/*.stderrout.log" % version)
+        local("tail -100f target/BRest-%s/logs/*.stderrout.log" % version)
 
 @task
 def build_and_start(version=VERSION):
     with settings(warn_only=True):
         local("pwd")
-        local("./target/zrest-%s/bin/stopZRest.sh" % version)
+        local("./target/BRest-%s/bin/stopBRest.sh" % version)
         local("mvn clean install -P local")
-        local("cd target; tar -zxvf zrest-%s.tar.gz" % version)
+        local("cd target; tar -zxvf BRest-%s.tar.gz" % version)
         #replace_properties()
         #
-        local("cd target/zrest-%s; ./bin/startZRest.sh" % version)
+        local("cd target/BRest-%s; ./bin/startBRest.sh" % version)
         print "\nwait 3 seconds before tailing\n"
         time.sleep(3)
-        local("tail -100f target/zrest-%s/logs/*.stderrout.log" % version)
+        local("tail -100f target/BRest-%s/logs/*.stderrout.log" % version)
 
 @task
 def restart_and_debug(version=VERSION):
     with settings(warn_only=True):
         local("pwd")
-        local("./target/zrest-%s/bin/stopZRest.sh" % version)
-        local("cd target/zrest-%s; ./bin/debugZRest.sh" % version)
+        local("./target/BRest-%s/bin/stopBRest.sh" % version)
+        local("cd target/BRest-%s; ./bin/debugBRest.sh" % version)
         print "\nwait 3 seconds before tailing\n"
         time.sleep(3)
         local("tail -100f target/royalty-web-%s/logs/*.stderrout.log" % version)

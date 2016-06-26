@@ -4,11 +4,12 @@
 *.pyc
 workspace.xml
 target
+build
 .classpath
 .project
 .settings
 mem.properties
 mem.script
 .pydevproject
-.tern-project
+.gradle
 
