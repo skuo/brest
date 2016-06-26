@@ -2,10 +2,12 @@
 <!DOCTYPE configuration>
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml" />
+    
     <logger name="org.brest" level="INFO" additivity="false" >
-        <appender-ref ref="CONSOLE"/>
+        <!-- <appender-ref ref="CONSOLE"/> -->
         <appender-ref ref="FILE"/>
     </logger>
+    
     <springProfile name="staging">
         <logger name="brest.logback" level="TRACE" />
     </springProfile>
