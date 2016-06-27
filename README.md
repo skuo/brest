@@ -32,7 +32,7 @@ http://localhost:8080/greeting?name=steve
 
 TODO
 -----
-* specify log4j log file and access log
+* swagger
 * package and deploy
 
 Fabric
@@ -46,3 +46,5 @@ http://localhost:8080/brest-web/uploadFile #params: file and name
 Swagger-SpringMvc
 -----------
 http://localhost:8080/brest-web/api-docs
+http://localhost:8080/v2/api-docs?group=greetings
+http://localhost:8080/swagger-ui.html
