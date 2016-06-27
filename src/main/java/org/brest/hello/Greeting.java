@@ -18,10 +18,8 @@ public class Greeting {
         return id;
     }
 
-    /*
     @JsonProperty(required=true)
     @ApiModelProperty(notes="The name of the user", required=true)
-    */
     public String getContent() {
         return content;
     }

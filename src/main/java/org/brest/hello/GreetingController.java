@@ -22,7 +22,7 @@ public class GreetingController {
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
-    /*
+    
     @ApiOperation(value="getGretting", nickname="getGreeting")
     @ApiImplicitParams({
         @ApiImplicitParam(name="name", value="User's name", required=false, dataType="string", paramType="query", defaultValue="World")
@@ -33,8 +33,7 @@ public class GreetingController {
             @ApiResponse(code=403, message="Forbidden"),
             @ApiResponse(code=404, message="Not Found"),
             @ApiResponse(code=500, message="Failure")
-    })
-    */
+    })    
     @RequestMapping(method=RequestMethod.GET, path="/greeting", produces="application/json")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
         logger.debug("[debug] name=" + name);
