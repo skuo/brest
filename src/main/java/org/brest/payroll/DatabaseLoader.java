@@ -19,7 +19,9 @@ public class DatabaseLoader implements CommandLineRunner {
     
     @Override
     public void run(String... strings) throws Exception {
-        log.info("Loading initial data");
+        // log requires enabling logging for Spring classes in logback-spring.xml.  
+        // Use System.out in this example.
+        log.info("Loading initial Employee data");
         this.repository.save(new Employee("Frodo", "Baggis", "Rig bearer"));
     }
 }

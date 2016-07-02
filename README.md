@@ -43,10 +43,16 @@ fab build_and_debug # debug port at 4000, jetty listens at 8080
 
 Postman
 -----------
-http://localhost:8080/brest-web/uploadFile #params: file and name
+#http://localhost:8080/brest-web/uploadFile #params: file and name
 
 Swagger-SpringMvc
 -----------
 http://localhost:8080/brest-web/api-docs
 http://localhost:8080/v2/api-docs?group=greetings
 http://localhost:8080/swagger-ui.html
+
+Spring Data
+-----------
+curl localhost:8080/api
+curl localhost:8080/api/employees
+curl -X POST localhost:8080/api/employees -d '{"firstName":"Bilbo","lastName":"Baggins","description":"burglar"}' -H 'Content-Type:application/json'
