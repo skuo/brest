@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 public class GreetingController {
-    private static final Logger logger = LoggerFactory.getLogger(GreetingController.class);
+    private static final Logger log = LoggerFactory.getLogger(GreetingController.class);
 
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
@@ -36,8 +36,8 @@ public class GreetingController {
     })    
     @RequestMapping(method=RequestMethod.GET, path="/greeting", produces="application/json")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
-        logger.debug("[debug] name=" + name);
-        logger.info("[info] name=" + name);
+        log.debug("[debug] name=" + name);
+        log.info("[info] name=" + name);
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 }

@@ -1,4 +1,4 @@
-package org.brest.payroll;
+package org.brest.hello.payroll;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
