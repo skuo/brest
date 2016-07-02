@@ -32,7 +32,9 @@ http://localhost:8080/greeting?name=steve
 
 TODO
 -----
-* swagger
+* react.js
+* change webapp application context, port number
+* implement filter
 * package and deploy
 
 Fabric
