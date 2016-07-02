@@ -16,16 +16,16 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-public class GreetingController {
-    private static final Logger log = LoggerFactory.getLogger(GreetingController.class);
+public class OrderController {
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
-    private static final String template = "Hello, %s!";
+    private static final String template = "Order's ready, %s!";
     private final AtomicLong counter = new AtomicLong();
 
     
-    @ApiOperation(value="getGreeting", nickname="getGreeting")
+    @ApiOperation(value="getOrder", nickname="getOrder")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="name", value="User's name", required=false, dataType="string", paramType="query", defaultValue="World")
+        @ApiImplicitParam(name="name", value="User's name", required=false, dataType="string", paramType="query", defaultValue="Mr. Smart")
     })
     @ApiResponses(value={
             @ApiResponse(code=200, message="Success", response=Greeting.class),
@@ -34,8 +34,11 @@ public class GreetingController {
             @ApiResponse(code=404, message="Not Found"),
             @ApiResponse(code=500, message="Failure")
     })    
-    @RequestMapping(method=RequestMethod.GET, path="/greeting", produces="application/json")
-    public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
+    @RequestMapping(method=RequestMethod.GET, path="/greeting/order", produces="application/json")
+    /*
+     * A subpath under /greeting to test Swagger docket
+     */
+    public Greeting greeting(@RequestParam(value="name", defaultValue="Mr. Smart") String name) {
         log.debug("[debug] name=" + name);
         log.info("[info] name=" + name);
         return new Greeting(counter.incrementAndGet(), String.format(template, name));

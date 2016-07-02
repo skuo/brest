@@ -1,7 +1,8 @@
-package org.brest.hello;
+package org.brest.payroll;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.brest.hello.Greeting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,16 +17,16 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-public class GreetingController {
-    private static final Logger log = LoggerFactory.getLogger(GreetingController.class);
+public class PayrollController {
+    private static final Logger log = LoggerFactory.getLogger(PayrollController.class);
 
-    private static final String template = "Hello, %s!";
+    private static final String template = "Show me the money, %s!";
     private final AtomicLong counter = new AtomicLong();
 
     
-    @ApiOperation(value="getGreeting", nickname="getGreeting")
+    @ApiOperation(value="getPayroll", nickname="getPayroll")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="name", value="User's name", required=false, dataType="string", paramType="query", defaultValue="World")
+        @ApiImplicitParam(name="name", value="User's name", required=false, dataType="string", paramType="query", defaultValue="Paymaster")
     })
     @ApiResponses(value={
             @ApiResponse(code=200, message="Success", response=Greeting.class),
@@ -34,8 +35,8 @@ public class GreetingController {
             @ApiResponse(code=404, message="Not Found"),
             @ApiResponse(code=500, message="Failure")
     })    
-    @RequestMapping(method=RequestMethod.GET, path="/greeting", produces="application/json")
-    public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
+    @RequestMapping(method=RequestMethod.GET, path="/payroll", produces="application/json")
+    public Greeting Payroll(@RequestParam(value="name", defaultValue="Paymaster") String name) {
         log.debug("[debug] name=" + name);
         log.info("[info] name=" + name);
         return new Greeting(counter.incrementAndGet(), String.format(template, name));

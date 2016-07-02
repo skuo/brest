@@ -22,12 +22,22 @@ public class Application {
     }
     
     @Bean
-    public Docket newApi() {
+    public Docket greetingApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("greeting")
                 .apiInfo(apiInfo())
                 .select()
                 .paths(regex("/greeting.*"))
+                .build();
+    }
+    
+    @Bean
+    public Docket payrollApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("payroll")
+                .apiInfo(apiInfo())
+                .select()
+                .paths(regex("/payroll.*"))
                 .build();
     }
     
