@@ -1,4 +1,4 @@
-package org.brest.hello.payroll;
+package org.brest.payroll;
 
 import org.brest.hello.GreetingController;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package org.brest.hello.payroll;
+package org.brest.payroll;
 
 import org.springframework.data.repository.CrudRepository;
 
