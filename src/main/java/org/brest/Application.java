@@ -22,6 +22,7 @@ public class Application {
     }
     
     @Bean
+    // Group all REST endpoint with '/greeting' prefix in the same docket
     public Docket greetingApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("greeting")
@@ -32,6 +33,7 @@ public class Application {
     }
     
     @Bean
+    // Group all REST endpoint with '/payroll' prefix in the same docket
     public Docket payrollApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("payroll")
