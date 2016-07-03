@@ -32,10 +32,10 @@ http://localhost:8080/greeting?name=steve
 
 TODO
 -----
-* react.js
 * change webapp application context, port number
 * implement filter
 * package and deploy
+* gradle node.js and npm tasks
 
 Fabric
 -----------
@@ -56,3 +56,58 @@ Spring Data
 curl localhost:8080/api
 curl localhost:8080/api/employees
 curl -X POST localhost:8080/api/employees -d '{"firstName":"Bilbo","lastName":"Baggins","description":"burglar"}' -H 'Content-Type:application/json'
+
+# with paging and an example HAL response
+$ curl localhost:8080/api/employees?size=2
+{
+  "_embedded" : {
+    "employees" : [ {
+      "firstName" : "Frodo",
+      "lastName" : "Baggins",
+      "description" : "ring bearer",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8080/api/employees/1"
+        },
+        "employee" : {
+          "href" : "http://localhost:8080/api/employees/1"
+        }
+      }
+    }, {
+      "firstName" : "Bilbo",
+      "lastName" : "Baggins",
+      "description" : "burglar",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8080/api/employees/2"
+        },
+        "employee" : {
+          "href" : "http://localhost:8080/api/employees/2"
+        }
+      }
+    } ]
+  },
+  "_links" : {
+    "first" : {
+      "href" : "http://localhost:8080/api/employees?page=0&size=2"
+    },
+    "self" : {
+      "href" : "http://localhost:8080/api/employees"
+    },
+    "next" : {
+      "href" : "http://localhost:8080/api/employees?page=1&size=2"
+    },
+    "last" : {
+      "href" : "http://localhost:8080/api/employees?page=2&size=2"
+    },
+    "profile" : {
+      "href" : "http://localhost:8080/api/profile/employees"
+    }
+  },
+  "page" : {
+    "size" : 2,
+    "totalElements" : 6,
+    "totalPages" : 3,
+    "number" : 0
+  }
+}

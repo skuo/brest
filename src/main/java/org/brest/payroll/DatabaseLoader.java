@@ -22,6 +22,11 @@ public class DatabaseLoader implements CommandLineRunner {
         // log requires enabling logging for Spring classes in logback-spring.xml.  
         // Use System.out in this example.
         log.info("Loading initial Employee data");
-        this.repository.save(new Employee("Frodo", "Baggis", "Rig bearer"));
+        this.repository.save(new Employee("Frodo", "Baggins", "ring bearer"));
+        this.repository.save(new Employee("Bilbo", "Baggins", "burglar"));
+        this.repository.save(new Employee("Gandalf", "the Grey", "wizard"));
+        this.repository.save(new Employee("Samwise", "Gamgee", "gardener"));
+        this.repository.save(new Employee("Meriadoc", "Brandybuck", "pony rider"));
+        this.repository.save(new Employee("Peregrin", "Took", "pipe smoker"));
     }
 }
