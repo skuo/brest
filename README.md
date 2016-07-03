@@ -51,11 +51,15 @@ http://localhost:8080/brest-web/api-docs
 http://localhost:8080/v2/api-docs?group=greetings
 http://localhost:8080/swagger-ui.html
 
-Spring Data
+Spring Data REST API
 -----------
 curl localhost:8080/api
 curl localhost:8080/api/employees
 curl -X POST localhost:8080/api/employees -d '{"firstName":"Bilbo","lastName":"Baggins","description":"burglar"}' -H 'Content-Type:application/json'
+
+React and Spring Data REST API
+-----------
+In a browser, go to "localhost:8080"
 
 # with paging and an example HAL response
 $ curl localhost:8080/api/employees?size=2
@@ -110,4 +114,29 @@ $ curl localhost:8080/api/employees?size=2
     "totalPages" : 3,
     "number" : 0
   }
+}
+
+$ curl http://localhost:8080/api/profile/employees -H 'Accept:application/schema+json'
+{
+  "title" : "Employee",
+  "properties" : {
+    "firstName" : {
+      "title" : "First name",
+      "readOnly" : false,
+      "type" : "string"
+    },
+    "lastName" : {
+      "title" : "Last name",
+      "readOnly" : false,
+      "type" : "string"
+    },
+    "description" : {
+      "title" : "Description",
+      "readOnly" : false,
+      "type" : "string"
+    }
+  },
+  "definitions" : { },
+  "type" : "object",
+  "$schema" : "http://json-schema.org/draft-04/schema#"
 }
