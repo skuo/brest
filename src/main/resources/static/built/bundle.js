@@ -92,9 +92,24 @@
 						path: employeeCollection.entity._links.profile.href,
 						headers: { 'Accept': 'application/schema+json' }
 					}).then(function (schema) {
+						// tag::json-schema-filter[]
+						/**
+	      * Filter unneeded JSON Schema properties, like uri references and
+	      * subtypes ($ref).
+	      */
+						Object.keys(schema.entity.properties).forEach(function (property) {
+							if (schema.entity.properties[property].hasOwnProperty('format') && schema.entity.properties[property].format === 'uri') {
+								delete schema.entity.properties[property];
+							}
+							if (schema.entity.properties[property].hasOwnProperty('$ref')) {
+								delete schema.entity.properties[property];
+							}
+						});
+	
 						_this.schema = schema.entity;
 						_this.links = employeeCollection.entity._links;
 						return employeeCollection;
+						// end::json-schema-filter[]
 					});
 				}).then(function (employeeCollection) {
 					_this.page = employeeCollection.entity.page;
@@ -133,6 +148,7 @@
 	
 			// end::on-create[]
 	
+			// tag::on-update[]
 		}, {
 			key: 'onUpdate',
 			value: function onUpdate(employee, updatedEmployee) {
@@ -147,16 +163,30 @@
 				}).done(function (response) {
 					/* Let the websocket handler update the state */
 				}, function (response) {
+					if (response.status.code === 403) {
+						alert('ACCESS DENIED: You are not authorized to update ' + employee.entity._links.self.href);
+					}
 					if (response.status.code === 412) {
 						alert('DENIED: Unable to update ' + employee.entity._links.self.href + '. Your copy is stale.');
 					}
 				});
 			}
+	
+			// end::on-update[]
+	
+			// tag::on-delete[]
 		}, {
 			key: 'onDelete',
 			value: function onDelete(employee) {
-				client({ method: 'DELETE', path: employee.entity._links.self.href });
+				client({ method: 'DELETE', path: employee.entity._links.self.href }).done(function (response) {/* let the websocket handle updating the UI */}, function (response) {
+					if (response.status.code === 403) {
+						alert('ACCESS DENIED: You are not authorized to delete ' + employee.entity._links.self.href);
+					}
+				});
 			}
+	
+			// end::on-delete[]
+	
 		}, {
 			key: 'onNavigate',
 			value: function onNavigate(navUri) {
@@ -457,6 +487,8 @@
 			this.handleInput = this.handleInput.bind(this);
 		}
 	
+		// tag::employee[]
+	
 		_createClass(EmployeeList, [{
 			key: 'handleInput',
 			value: function handleInput(e) {
@@ -570,6 +602,11 @@
 								null,
 								'Description'
 							),
+							React.createElement(
+								'th',
+								null,
+								'Manager'
+							),
 							React.createElement('th', null),
 							React.createElement('th', null)
 						),
@@ -597,6 +634,8 @@
 			this.handleDelete = this.handleDelete.bind(this);
 		}
 	
+		// end::employee[]
+	
 		_createClass(Employee, [{
 			key: 'handleDelete',
 			value: function handleDelete() {
@@ -622,6 +661,11 @@
 						'td',
 						null,
 						this.props.employee.entity.description
+					),
+					React.createElement(
+						'td',
+						null,
+						this.props.employee.entity.manager.name
 					),
 					React.createElement(
 						'td',
@@ -26075,7 +26119,9 @@
 		});
 	}
 	
-	module.exports.register = register;
+	module.exports = {
+		register: register
+	};
 
 /***/ },
 /* 207 */

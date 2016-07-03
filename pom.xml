@@ -41,14 +41,20 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-		</dependency>
-		<!-- tag::websocket[] -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
-		<!-- end::websocket[] -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -120,16 +126,6 @@
 					</execution>
 				</executions>
             </plugin>
-
-			<plugin>
-				<groupId>com.rimerosolutions.maven.plugins</groupId>
-				<artifactId>wrapper-maven-plugin</artifactId>
-				<version>0.0.4</version>
-				<configuration>
-					<mavenVersion>3.3.3</mavenVersion>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
 

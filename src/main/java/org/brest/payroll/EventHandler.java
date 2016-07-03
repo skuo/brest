@@ -1,6 +1,6 @@
 package org.brest.payroll;
 
-import static org.brest.payroll.WebSocketConfiguration.MESSAGE_PREFIX;
+import static org.brest.payroll.WebSocketConfiguration.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
