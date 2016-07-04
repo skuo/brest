@@ -1,0 +1,179 @@
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'maven'
+apply plugin: 'war'
+
+// Setting project variables
+group = 'com.maker'
+// name, which is artifactId is taken from directory name.  It's ok for now.
+//name = 'royalty-web'
+version = '0.0.1-SNAPSHOT'
+
+// extra properties for profile
+ext.dist = null
+ext.overrideConfDir = null
+//dependencies versions
+ext.jettyVersion = '9.2.10.v20150310'
+ext.jettyJspVersion = '9.2.10.v20150310'
+ext.springVersion = '4.1.6.RELEASE'
+ext.sprintSecurityVersion = '4.0.0.RELEASE'
+
+// --------
+// profiles
+setProfile()
+
+def setProfile() {
+    def profile = hasProperty('profile') ? profile : 'local'
+    dist = profile
+    if (profile == 'local') {
+        overrideConfDir = 'src/main/conf/local'
+    } else if (profile == 'int') {
+        overrideConfDir = 'src/main/conf/int'
+    } else if (profile == 'prod') {
+        overrideConfDir = 'src/main/conf/prod'
+    }
+}
+
+println "profile properties"
+println "dist=" + dist
+println "overrideConfDir=" + overrideConfDir
+    
+// --------------------------------    
+// Required for provided dependency
+configurations {
+    provided
+}
+
+sourceSets {
+  main {
+    compileClasspath += configurations.provided
+  }
+  test {
+    compileClasspath += configurations.provided
+    runtimeClasspath += configurations.provided
+  }
+}
+
+/*
+eclipse {
+  classpath {
+    plusConfigurations += [configurations.provided]
+    noExportConfigurations += [configurations.provided]
+  }
+}
+*/
+
+//dependencies declaration
+dependencies {
+    compile group: 'net.sourceforge.javacsv', name: 'javacsv', version: '2.0'
+    compile group: 'args4j', name: 'args4j', version: '2.0.12'
+    compile group: 'cglib', name: 'cglib-nodep', version: '2.2'
+    compile group: 'joda-time', name: 'joda-time', version: '2.1'
+    compile group: 'com.jcraft', name: 'jsch', version: '0.1.52'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.9.30'
+    // json jars
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.5.2'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.5.2'
+    compile group: 'org.json', name: 'json', version: '20141113'
+    // Spring jars
+    compile group: 'org.springframework', name: 'spring-core', version: springVersion
+    compile group: 'org.springframework', name: 'spring-test', version: springVersion
+    compile group: 'org.springframework', name: 'spring-aop', version: springVersion
+    compile group: 'org.springframework', name: 'spring-web', version: springVersion
+    compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
+    compile group: 'org.springframework', name: 'spring-jdbc', version: springVersion
+    compile group: 'org.springframework', name: 'spring-context-support', version: springVersion
+    // apache
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.4.1'
+    // commons
+    compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.3.1'
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
+    // Logging 
+    compile group: 'log4j', name: 'log4j', version: '1.2.17'
+    // Database
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.10'
+    compile group: 'com.jolbox', name: 'bonecp', version: '0.7.1.RELEASE'
+    compile group: 'org.slf4j', name: 'slf4j-nop', version: '1.5.10'
+    compile group: 'com.google.guava', name: 'guava', version: 'r09'
+    // JETTY
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyVersion
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jettyVersion
+    compile group: 'org.eclipse.jetty', name: 'jetty-webapp', version: jettyVersion
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlets', version: jettyVersion 
+    compile group: 'org.eclipse.jetty', name: 'jetty-runner', version: jettyVersion
+    // JSP and JSTL 
+    compile group: 'org.eclipse.jetty', name: 'jetty-jsp', version: jettyJspVersion
+    provided 'javax.servlet:jstl:1.2' // <scope>provided</scope>
+    compile group: 'javax.mail', name: 'mail', version: '1.4.7'
+    provided 'javax.activation:activation:1.1.1' 
+    compile group: 'org.eclipse.jetty', name: 'jetty-maven-plugin', version: jettyJspVersion
+    provided 'org.mortbay.jasper:apache-jsp:8.0.9.M3' 
+    // test jars
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    testCompile group: 'org.dbunit', name: 'dbunit', version: '2.4.7'
+    testCompile group: 'org.hsqldb', name: 'hsqldb', version: '2.0.0'
+}
+
+//repositories
+repositories { 
+    mavenCentral()
+
+    mavenLocal()
+
+//    maven {
+//        url "https://repository-master.mulesoft.org/nexus/content/repositories/public/"
+//    }
+}
+
+// publishing artifacts
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file://localhost/Users/skuo/.m2/repository/")
+        }
+    }
+}
+    
+// assemble 
+task copyArtifacts(type: Copy) {
+    //println 'copyArtifacts'
+    def distDir = 'build/distribution'
+    // delete
+    delete distDir
+    // copy, replace variables and set mode
+    copy { 
+        from('src/main/bin') {
+            // \u007B = {, \u007D = }, \0024 = $
+            filter{ String line -> line.replace('$\u007Bjetty.version\u007D',"9.2.10.v20150310") }
+            filter{ String line -> line.replace('$\u007Bproject.version\u007D',version) }
+            fileMode 0755
+        }
+        into distDir + '/bin' 
+    }
+    copy { from 'lib' into distDir + '/lib' include '*.jar' }
+    // exclude royalty-web-override.propertie as it is replaced by the one from overrideConfDir
+    copy { from 'conf' into distDir + '/conf' include '*.xml' include '*.properties' exclude 'royalty-web-override.properties' }
+    copy { from overrideConfDir into distDir + '/conf' include '*.xml' include '*.properties' }
+    copy { from 'build/libs' into distDir include '*.war' }
+    // copy jetty jars.  
+    copy { from '/Users/skuo/.m2/repository/org/eclipse/jetty/jetty-maven-plugin/9.2.10.v20150310' into distDir+'/lib' include '*.jar' }
+    copy { from '/Users/skuo/.m2/repository/org/eclipse/jetty/jetty-runner/9.2.10.v20150310' into distDir+'/lib' include '*.jar' }
+    // create an empty logs directory for requestLogs
+    def logDir = new File('build/distribution/logs')
+    logDir.mkdirs()
+}
+
+task zipArtifacts(type: Zip) {
+    // println 'zipArtifacts'
+    baseName = project.name + '-' + version + '-' + dist
+    // destinationDir = file('build') // maybe default 'build/distributions' is fine
+    from 'build/distribution'
+}
+
+task assembleArtifacts() {
+    //println 'assembleArtifacts done'
+}
+assembleArtifacts.dependsOn copyArtifacts, zipArtifacts
+zipArtifacts.shouldRunAfter copyArtifacts

@@ -11,6 +11,11 @@ java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4
 java -server -Xms1700M -Xmx1700M -Xdebug -jar build/libs/brest-0.1.0.jar > console.log 2>&1 &
 java -jar build/libs/brest-0.1.0.jar
 
+# gradle-node-plugin
+https://github.com/srs/gradle-node-plugin
+
+
+
 Maven Build
 -----
 mvn spring-boot:run. 

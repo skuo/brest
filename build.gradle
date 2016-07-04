@@ -7,6 +7,10 @@ buildscript {
     }
 }
 
+plugins {
+  id "com.moowork.node" version "0.13"
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
@@ -23,6 +27,12 @@ repositories {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+node {
+    version = '0.10.33'
+    npmVersion = '1.3.8'
+    download = true
+}
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
