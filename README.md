@@ -37,7 +37,6 @@ http://localhost:8090/greeting?name=steve
 
 TODO
 -----
-* change webapp application context
 * implement filter
 * package and deploy
 
@@ -51,8 +50,6 @@ Postman
 
 Swagger-SpringMvc
 -----------
-http://localhost:8090/brest-web/api-docs
-http://localhost:8090/v2/api-docs?group=greetings
 http://localhost:8090/swagger-ui.html
 
 Spring Data REST API
