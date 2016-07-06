@@ -32,42 +32,41 @@ java -jar target/brest-0.1.0.jar
 
 Smoke Test
 -----
-http://localhost:8080/greeting # the default name parameter is "World"
-http://localhost:8080/greeting?name=steve
+http://localhost:8090/greeting # the default name parameter is "World"
+http://localhost:8090/greeting?name=steve
 
 TODO
 -----
-* change webapp application context, port number
+* change webapp application context
 * implement filter
 * package and deploy
-* gradle node.js and npm tasks
 
 Fabric
 -----------
-fab build_and_debug # debug port at 4000, jetty listens at 8080
+fab build_and_debug # debug port at 4000, jetty listens at 8090
 
 Postman
 -----------
-#http://localhost:8080/brest-web/uploadFile #params: file and name
+#http://localhost:8090/brest-web/uploadFile #params: file and name
 
 Swagger-SpringMvc
 -----------
-http://localhost:8080/brest-web/api-docs
-http://localhost:8080/v2/api-docs?group=greetings
-http://localhost:8080/swagger-ui.html
+http://localhost:8090/brest-web/api-docs
+http://localhost:8090/v2/api-docs?group=greetings
+http://localhost:8090/swagger-ui.html
 
 Spring Data REST API
 -----------
-curl localhost:8080/api
-curl localhost:8080/api/employees
-curl -X POST localhost:8080/api/employees -d '{"firstName":"Bilbo","lastName":"Baggins","description":"burglar"}' -H 'Content-Type:application/json'
+curl localhost:8090/api
+curl localhost:8090/api/employees
+curl -X POST localhost:8090/api/employees -d '{"firstName":"Bilbo","lastName":"Baggins","description":"burglar"}' -H 'Content-Type:application/json'
 
 React and Spring Data REST API
 -----------
-In a browser, go to "localhost:8080"
+In a browser, go to "localhost:8090"
 
 # with paging and an example HAL response
-$ curl localhost:8080/api/employees?size=2
+$ curl localhost:8090/api/employees?size=2
 {
   "_embedded" : {
     "employees" : [ {
@@ -76,10 +75,10 @@ $ curl localhost:8080/api/employees?size=2
       "description" : "ring bearer",
       "_links" : {
         "self" : {
-          "href" : "http://localhost:8080/api/employees/1"
+          "href" : "http://localhost:8090/api/employees/1"
         },
         "employee" : {
-          "href" : "http://localhost:8080/api/employees/1"
+          "href" : "http://localhost:8090/api/employees/1"
         }
       }
     }, {
@@ -88,29 +87,29 @@ $ curl localhost:8080/api/employees?size=2
       "description" : "burglar",
       "_links" : {
         "self" : {
-          "href" : "http://localhost:8080/api/employees/2"
+          "href" : "http://localhost:8090/api/employees/2"
         },
         "employee" : {
-          "href" : "http://localhost:8080/api/employees/2"
+          "href" : "http://localhost:8090/api/employees/2"
         }
       }
     } ]
   },
   "_links" : {
     "first" : {
-      "href" : "http://localhost:8080/api/employees?page=0&size=2"
+      "href" : "http://localhost:8090/api/employees?page=0&size=2"
     },
     "self" : {
-      "href" : "http://localhost:8080/api/employees"
+      "href" : "http://localhost:8090/api/employees"
     },
     "next" : {
-      "href" : "http://localhost:8080/api/employees?page=1&size=2"
+      "href" : "http://localhost:8090/api/employees?page=1&size=2"
     },
     "last" : {
-      "href" : "http://localhost:8080/api/employees?page=2&size=2"
+      "href" : "http://localhost:8090/api/employees?page=2&size=2"
     },
     "profile" : {
-      "href" : "http://localhost:8080/api/profile/employees"
+      "href" : "http://localhost:8090/api/profile/employees"
     }
   },
   "page" : {
@@ -121,7 +120,7 @@ $ curl localhost:8080/api/employees?size=2
   }
 }
 
-$ curl http://localhost:8080/api/profile/employees -H 'Accept:application/schema+json'
+$ curl http://localhost:8090/api/profile/employees -H 'Accept:application/schema+json'
 {
   "title" : "Employee",
   "properties" : {
