@@ -35,6 +35,11 @@ Smoke Test
 http://localhost:8090/greeting # the default name parameter is "World"
 http://localhost:8090/greeting?name=steve
 
+
+Shutdown
+-----
+curl -X POST -u steve:kuo localhost:8090/shutdown
+
 TODO
 -----
 * implement filter
