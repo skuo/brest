@@ -6,7 +6,7 @@ import fnmatch
 import os
 import time
 
-VERSION="0.1.0-SNAPSHOT-local"
+VERSION="0.1.0"
 
 projName="brest"
 tarGzFile=""
@@ -18,101 +18,30 @@ ver=""
 def build_and_debug(version=VERSION):
     with settings(warn_only=True):
         local("pwd")
-        local("./target/BRest-%s/bin/stopBRest.sh" % version)
-        local("mvn clean install -P local")
-        local("cd target; tar -zxvf BRest-%s.tar.gz" % version)
-        #replace_properties()
-        #
-        local("cd target/BRest-%s; ./bin/debugBRest.sh" % version)
-        print "\nwait 3 seconds before tailing\n"
-        time.sleep(3)
-        local("tail -100f target/BRest-%s/logs/*.stderrout.log" % version)
+        local("curl -X POST -u steve:kuo localhost:8090/shutdown")
+        local("gradlew clean build")
+        local("java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n -jar build/libs/brest-%s.jar" % version)
    
 @task
 def build_skip_tests_and_debug(version=VERSION):
     with settings(warn_only=True):
-        local("pwd")
-        local("./target/BRest-%s/bin/stopRoyaltyWeb.sh" % version)
-        local("mvn clean install -DskipTests -P local")
-        local("cd target; tar -zxvf BRest-%s.tar.gz" % version)
-        #replace_properties()
-        #
-        local("cd target/BRest-%s; ./bin/debugBRest.sh" % version)
-        print "\nwait 3 seconds before tailing\n"
-        time.sleep(3)
-        local("tail -100f target/BRest-%s/logs/*.stderrout.log" % version)
+        print "\nTODO\n"
 
 @task
 def build_and_start(version=VERSION):
     with settings(warn_only=True):
         local("pwd")
-        local("./target/BRest-%s/bin/stopBRest.sh" % version)
-        local("mvn clean install -P local")
-        local("cd target; tar -zxvf BRest-%s.tar.gz" % version)
-        #replace_properties()
-        #
-        local("cd target/BRest-%s; ./bin/startBRest.sh" % version)
-        print "\nwait 3 seconds before tailing\n"
-        time.sleep(3)
-        local("tail -100f target/BRest-%s/logs/*.stderrout.log" % version)
+        local("curl -X POST -u steve:kuo localhost:8090/shutdown")
+        local("gradlew clean build")
+        local("java -server -Xms1700M -Xmx1700M -jar build/libs/brest-%s.jar" % version)
 
 @task
 def restart_and_debug(version=VERSION):
     with settings(warn_only=True):
         local("pwd")
-        local("./target/BRest-%s/bin/stopBRest.sh" % version)
-        local("cd target/BRest-%s; ./bin/debugBRest.sh" % version)
-        print "\nwait 3 seconds before tailing\n"
-        time.sleep(3)
-        local("tail -100f target/royalty-web-%s/logs/*.stderrout.log" % version)
+        local("curl -X POST -u steve:kuo localhost:8090/shutdown")
+        local("java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n -jar build/libs/brest-%s.jar" % version)
 
-def replace_properties(version=VERSION):
-    global PASSWORD
-    global CLIENT_SECRET
-    global API_KEYS
-    global MAIL_SERVER_PASSWORD
-    global DB_PASSWORD
-    global FI022_PASSWORD
-    global SFDC_OAUTH2_CLIENT_SECRET
-    global SFDC_OAUTH2_PASSWORD
-    global PAYPAL_OAUTH2_CLIENT_SECRET
-    # set password or secret from environment variables in file with sed
-    PASSWORD = os.environ.get('INT_FI001_SFTP_PASSWORD') 
-    CLIENT_SECRET = os.environ.get('DEV_OAUTH2_CLIENT_SECRET') 
-    API_KEYS = os.environ.get('DEV_API_KEYS') 
-    MAIL_SERVER_PASSWORD = os.environ.get('MAIL_SERVER_PASSWORD') 
-    DB_PASSWORD = os.environ.get('DB_PASSWORD')
-    FI022_PASSWORD = os.environ.get('INT_FI022_SFTP_PASSWORD')
-    SFDC_OAUTH2_CLIENT_SECRET = os.environ.get('INT_SFDC_OAUTH2_CLIENT_SECRET')
-    SFDC_OAUTH2_PASSWORD = os.environ.get('INT_SFDC_OAUTH2_PASSWORD')
-    PAYPAL_OAUTH2_CLIENT_SECRET = os.environ.get('INT_PAYPAL_OAUTH2_CLIENT_SECRET')
-    sedCmd = "sed -i.bak 's/dummyPassword/%s/g' target/royalty-web-%s/conf/royalty-web-override.properties" \
-        % (PASSWORD,version)
-    local(sedCmd)
-    sedCmd = "sed -i.bak 's/dummyClientSecret/%s/g' target/royalty-web-%s/conf/royalty-web-override.properties" \
-        % (CLIENT_SECRET,version)
-    local(sedCmd)
-    sedCmd = "sed -i.bak 's/dummyApiKeys/%s/g' target/royalty-web-%s/conf/royalty-web-override.properties" \
-        % (API_KEYS,version)
-    local(sedCmd)
-    sedCmd = "sed -i.bak 's/dummyMailServerPassword/%s/g' target/royalty-web-%s/conf/royalty-web-override.properties" \
-        % (MAIL_SERVER_PASSWORD,version)
-    local(sedCmd)
-    sedCmd = "sed -i.bak 's/dummyDbPassword/%s/g' target/royalty-web-%s/conf/royalty-web-override.properties" \
-        % (DB_PASSWORD,version)
-    local(sedCmd)
-    sedCmd = "sed -i.bak 's/dummyFI022Password/%s/g' target/royalty-web-%s/conf/royalty-web-override.properties" \
-        % (FI022_PASSWORD,version)
-    local(sedCmd)
-    sedCmd = "sed -i.bak 's/sdfcOauth2ClientSecret/%s/g' target/royalty-web-%s/conf/royalty-web-override.properties" \
-        % (SFDC_OAUTH2_CLIENT_SECRET,version)
-    local(sedCmd)
-    sedCmd = "sed -i.bak 's/sfdcOauth2Password/%s/g' target/royalty-web-%s/conf/royalty-web-override.properties" \
-        % (SFDC_OAUTH2_PASSWORD,version)
-    local(sedCmd)
-    sedCmd = "sed -i.bak 's/paypalOauth2ClientSecret/%s/g' target/royalty-web-%s/conf/royalty-web-override.properties" \
-        % (PAYPAL_OAUTH2_CLIENT_SECRET,version)
-    local(sedCmd)
 
 #-----------------------------------------------------------------
 # find files by pattern
