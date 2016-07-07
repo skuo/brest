@@ -15,7 +15,6 @@ java -jar build/libs/brest-0.1.0.jar
 https://github.com/srs/gradle-node-plugin
 
 
-
 Maven Build
 -----
 mvn spring-boot:run. 
@@ -23,8 +22,10 @@ mvn spring-boot:run.
 or
 mvn clean install
 
+
 # debug
 java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=y -jar target/brest-0.1.0.jar > console.log 2>&1 &
+
 # run
 java -server -Xms1700M -Xmx1700M -Xdebug -jar target/brest-0.1.0.jar > console.log 2>&1 &
 java -jar target/brest-0.1.0.jar 
@@ -40,18 +41,13 @@ Shutdown
 -----
 curl -X POST -u steve:kuo localhost:8090/shutdown
 
-TODO
------
-* implement filter
-* package and deploy
-
 Fabric
 -----------
-fab build_and_debug # debug port at 4000, jetty listens at 8090
+fab build_and_debug # debug port at 4000, tomcat listens at 8090
 
 Postman
 -----------
-#http://localhost:8090/brest-web/uploadFile #params: file and name
+http://localhost:8090/greeting?name=I am the best # need to set basic authentication
 
 Swagger-SpringMvc
 -----------
